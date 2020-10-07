@@ -10,7 +10,7 @@ pub struct SubscribeRequest {
 }
 
 // web::Data allows us to access the application state
-#[warn(clippy::toplevel_ref_arg)]
+#[allow(clippy::toplevel_ref_arg)]
 pub async fn subscribe(
     payload: web::Form<SubscribeRequest>,
     pool: web::Data<PgPool>,
