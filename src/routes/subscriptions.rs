@@ -10,15 +10,7 @@ pub struct SubscribeRequest {
 }
 
 // web::Data allows us to access the application state
-#[tracing::instrument(
-    name = "Adding a new subscriber",
-    skip(payload, pool),
-    fields(
-        request_id=%Uuid::new_v4(),
-        email = %payload.email,
-        name = %payload.name
-    )
-)]
+#[tracing::instrument(name = "Adding a new subscriber", skip(payload, pool))]
 pub async fn subscribe(
     payload: web::Form<SubscribeRequest>,
     pool: web::Data<PgPool>,
@@ -33,7 +25,6 @@ pub async fn subscribe(
     name = "Saving new subscriber details in the database",
     skip(payload, pool),
     fields(
-        request_id=%Uuid::new_v4(),
         email = %payload.email,
         name = %payload.name
     )
