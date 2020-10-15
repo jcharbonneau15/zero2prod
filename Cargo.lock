@@ -2554,6 +2554,7 @@ dependencies = [
  "anyhow",
  "chrono",
  "config",
+ "lazy_static",
  "reqwest",
  "serde",
  "sqlx",
