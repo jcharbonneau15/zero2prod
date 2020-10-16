@@ -21,6 +21,7 @@ pub async fn subscribe(
     Ok(HttpResponse::Ok().finish())
 }
 
+#[allow(clippy::toplevel_ref_arg)]
 #[tracing::instrument(
     name = "Saving new subscriber details in the database",
     skip(payload, pool),

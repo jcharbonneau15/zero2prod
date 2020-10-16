@@ -21,7 +21,7 @@ pub fn get_subscriber(name: String, env_filter: String) -> impl Subscriber + Sen
         EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new(env_filter));
 
     // Output the formatted spans to stdout
-    let formatting_layer = BunyanFormattingLayer::new(name.into(), std::io::stdout);
+    let formatting_layer = BunyanFormattingLayer::new(name, std::io::stdout);
 
     // The `with` method is provided by `SubscriberExt`, an extension
     // trait for `Subscriber` exposed by `tracing_subscriber`
