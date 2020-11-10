@@ -1,5 +1,5 @@
 use anyhow::Context;
-use sqlx::PgPool;
+use sqlx::postgres::PgPoolOptions;
 use std::net::TcpListener;
 use zero2prod::configuration::get_configuration;
 use zero2prod::startup::run;
@@ -12,7 +12,9 @@ async fn main() -> Result<(), anyhow::Error> {
 
     // Panic if we can't read configuration
     let configuration = get_configuration().expect("Failed to read configuration");
-    let connection = PgPool::connect(&configuration.database.conection_string())
+    let connection = PgPoolOptions::new()
+        .connect_timeout(std::time::Duration::from_secs(2))
+        .connect(&configuration.database.conection_string())
         .await
         .map_err(anyhow::Error::from)
         .with_context(|| "Failed to connecto to Postgres")?;
