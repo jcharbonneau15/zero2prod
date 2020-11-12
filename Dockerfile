@@ -15,10 +15,18 @@ ENV SQLX_OFFLINE true
 RUN cargo build --release
 
 # Runtime stage
-FROM rust:1.47-slim AS runtime
+FROM debian:buster-slim AS runtime
 
 # set working dir
 WORKDIR app
+
+# Install OpenSSl - it is dynamically linked in some dependencies
+RUN apt-get update -y \
+    && apt-get install -y --no-install-recommends openssl \
+    # Clean up
+    && apt-get autoremove -y \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy the compiled binary from the builder environment
 # to our runtime environment
