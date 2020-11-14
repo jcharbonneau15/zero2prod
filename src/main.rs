@@ -12,9 +12,9 @@ async fn main() -> Result<(), anyhow::Error> {
 
     // Panic if we can't read configuration
     let configuration = get_configuration().expect("Failed to read configuration");
-    let connection = PgPoolOptions::new()
+    let connection_pool = PgPoolOptions::new()
         .connect_timeout(std::time::Duration::from_secs(2))
-        .connect(&configuration.database.conection_string())
+        .connect_with(configuration.database.with_db())
         .await
         .map_err(anyhow::Error::from)
         .with_context(|| "Failed to connecto to Postgres")?;
@@ -25,6 +25,6 @@ async fn main() -> Result<(), anyhow::Error> {
     );
 
     let listener = TcpListener::bind(address)?;
-    run(listener, connection)?.await?;
+    run(listener, connection_pool)?.await?;
     Ok(())
 }
